@@ -2,7 +2,8 @@ import pandas as pd
 from datetime import datetime
 from dateutil.parser import parse
 
-data_df = pd.read_csv("Data/RawMoviesData.csv")
+#Location of source data 
+data_df = pd.read_csv("Data/moviesData.csv")
 
 extracted_df = data_df.loc[: ,['name', 'gross', 'runtime', 'budget', 'score', 'genre', 'votes', 'year', 'director', 'rating','released', 'star', 'writer', 'company']]
 
@@ -38,7 +39,7 @@ year = []
 for index, row in extracted_df.iterrows():
     x = pd.to_datetime(pd.Series(row['released']))
     month.append(int(x.dt.month))
-    year.append(x.dt.year)
+    year.append(int(x.dt.year))
     y = int(x.dt.weekday + 1)
     if  y < 6 :
         weekend.append(0)
@@ -52,12 +53,74 @@ for index, row in extracted_df.iterrows():
     if 'BBC' in row['company']:
         extracted_df.at[index,'company'] = 'BBC'
 
+#WM 1-16
 
+    elif row['company'] in ["Cineplex Odeon Films", "Cineplex-Odeon Films"]:
+        extracted_df.at[index, 'company'] = 'Cinplex Odeon Films'
+    elif "Cannon" in row['company'] and "City" not in row['company']:
+        extracted_df.at[index, 'company'] = "The Cannon Group"
+    elif "United Artist" in row['company']:
+        extracted_df.at[index, 'company'] = "United Artists"
+    elif "DreamWorks" in row['company']:
+        extracted_df.at[index, 'company'] = "DreamWorks"
+    elif "Vista Org" in row['company']:
+        extracted_df.at[index, 'company'] = "Vista Organization"
+    elif "Buena" in row['company']:
+        extracted_df.at[index, 'company'] = "Buena Vista"
+    elif "Disney" in row['company']:
+        extracted_df.at[index, 'company'] = "The Walt Disney Company"
+    elif "Warner" in row['company']:
+        extracted_df.at[index, 'company'] = "Warner Bros."
+    elif "Intermedia" in row['company']:
+        extracted_df.at[index, 'company'] = "Intermedia Films"
+    elif "Open Road" in row['company']:
+        extracted_df.at[index, 'company'] = "Open Road Films"
+    elif "Twentieth" in row['company']:
+        extracted_df.at[index, 'company'] = "Twentieth Century Fox Film Corporation"
+    elif "Canal" in row['company']:
+        extracted_df.at[index, 'company'] = "StudioCanal"
+    elif "Union Film" in row['company']:
+        extracted_df.at[index, 'company'] = "Asian Union Film & Entertainment"
+    elif "In-Gear" in row['company']:
+        extracted_df.at[index, 'company'] = "In-Gear Film"
+
+#SD 17-32
+
+    if 'Yari Film' in row ['company']:
+        extracted_df.at[index,'company'] = 'Yari Film Group'
+    if 'Carolco' in row ['company']:
+        extracted_df.at[index,'company'] = 'Carolco Pictures'
+    if 'Universal Pictures' in row ['company']:
+        extracted_df.at[index,'company'] = 'Universal Pictures'
+    if 'Atlas' in row ['company']:
+        extracted_df.at[index,'company'] = 'Atlas'
+    if 'Avenue Pictures' in row ['company']:
+        extracted_df.at[index,'company'] = 'Avenue Pictures'
+    if 'Paramount' in row ['company']:
+        extracted_df.at[index,'company'] = 'Paramount Pictures'
+    if 'CBS' in row ['company']:
+        extracted_df.at[index,'company'] = 'CBS Films'
+    if 'American Playhouse' in row ['company']:
+        extracted_df.at[index,'company'] = 'American Playhouse'
+    if 'Sony Pictures' in row ['company']:
+        extracted_df.at[index,'company'] = 'Sony Pictures'
+    if 'Alliance' in row ['company']:
+        extracted_df.at[index,'company'] = 'Alliance'
+    if 'Cecchi Gori' in row ['company']:
+        extracted_df.at[index,'company'] = 'Cecchi Gori Group'
+    if ('Lionsgate' and 'Lions Gate') in row ['company']:
+        extracted_df.at[index,'company'] = 'Lionsgate'
+    if 'China Film' in row ['company']:
+        extracted_df.at[index,'company'] = 'China Film Group Corporation'
+    if 'Six Entertainment' in row ['company']:
+        extracted_df.at[index,'company'] = 'Six Entertainment'
+    if 'TriStar' in row ['company']:
+        extracted_df.at[index,'company'] = 'TriStar Pictures'
 
 
 extracted_df['month'] = month
 extracted_df['isweekend'] = weekend
 extracted_df['year'] = year
 
-
-extracted_df.to_csv(r'C:\Users\reywe\OneDrive\Desktop\CleanMovieData.csv')
+#Location to write out file
+extracted_df.to_csv(r'C:\Users\jason\Desktop\CZ4032 Assignment\Data\CleanMovieData_0110.csv')
