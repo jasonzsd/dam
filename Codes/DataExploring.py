@@ -1,11 +1,13 @@
 import pandas as pd
+import plotly
+import plotly.graph_objs as go
+plotly.offline.init_notebook_mode(connected=True)
 import plotly.express as px
 
 
 data_df = pd.read_csv("Data/CleanMovieData.csv")
 
 # Year of Movie Release
-
 fig = px.histogram(data_df, x="year" )
 fig.update_layout(
     title_text='Year of Movie Release', # title of plot
@@ -17,7 +19,6 @@ fig.update_layout(
 
 
 # Top 20 Movie Gross
-
 gross_df = data_df.nlargest(20,'gross')
 fig2 = px.scatter(data_df.nlargest(20,'gross'), x="budget", y='gross', text="name")
 fig2.update_traces(textposition='top center')
@@ -29,9 +30,7 @@ fig2.update_layout(
 )
 
 
-
 # Top 20 Movie Based on Return On Investment
-
 tmp = []
 
 for index, row in gross_df.iterrows():
@@ -50,7 +49,6 @@ fig3.update_layout(
 
 
 # Public IMDb Score VS Gross Profit
-
 fig4 = px.scatter(data_df.nlargest(20,'gross'), x="score", y='gross',text="name" ,color="rating")
 fig4.update_traces(textposition='top center' )
 fig4.update_layout(
@@ -63,7 +61,6 @@ fig4.update_layout(
 
 
 # Public IMDb Vote VS Gross Profit
-
 fig5 = px.scatter(data_df, x="votes", y='gross' ,color="rating")
 fig5.update_layout(
     title_text='Public IMDb Vote VS Gross Profit', # title of plot
@@ -72,8 +69,10 @@ fig5.update_layout(
 
 )
 
-fig.show()
+#fig.show()
 #fig2.show()
 #fig3.show()
 #fig4.show()
 #fig5.show()
+
+plotly.offline.plot(fig5)
