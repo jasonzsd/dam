@@ -38,7 +38,7 @@ year = []
 for index, row in extracted_df.iterrows():
     x = pd.to_datetime(pd.Series(row['released']))
     month.append(int(x.dt.month))
-    year.append(x.dt.year)
+    year.append(int(x.dt.year))
     y = int(x.dt.weekday + 1)
     if  y < 6 :
         weekend.append(0)
