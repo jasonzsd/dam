@@ -1,7 +1,11 @@
+# original dataset: 6820 records (https://www.kaggle.com/danielgrijalvas/movies)
+# cleaned dataset: 4627 records
+
 import pandas as pd
 from datetime import datetime
 from dateutil.parser import parse
-
+import re
+ 
 data_df = pd.read_csv("Data/moviesData.csv")
 
 extracted_df = data_df.loc[: ,['name', 'gross', 'runtime', 'budget', 'score', 'genre', 'votes', 'year', 'director', 'rating','released', 'star', 'writer', 'company']]
@@ -27,7 +31,11 @@ extracted_df['gross_bin'] = tmp
 
 tmp_index = []
 for index, row in extracted_df.iterrows():
+    # remove records with budget = 0
     if(row['budget'] == 0):
+        tmp_index.append(index)
+    # remove records with incomplete date format
+    if (not bool(re.match('.+-.+-.+',row['released']))):
         tmp_index.append(index)
 
 extracted_df.drop(tmp_index , inplace=True)
@@ -55,7 +63,7 @@ for index, row in extracted_df.iterrows():
 #WM 1-16
 
     elif row['company'] in ["Cineplex Odeon Films", "Cineplex-Odeon Films"]:
-        extracted_df.at[index, 'company'] = 'Cinplex Odeon Films'
+        extracted_df.at[index, 'company'] = 'Cinpelex Odeon Films'
     elif "Cannon" in row['company'] and "City" not in row['company']:
         extracted_df.at[index, 'company'] = "The Cannon Group"
     elif "United Artist" in row['company']:
