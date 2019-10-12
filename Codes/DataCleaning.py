@@ -37,6 +37,10 @@ for index, row in extracted_df.iterrows():
     # remove records with incomplete date format
     if (not bool(re.match('.+-.+-.+',row['released']))):
         tmp_index.append(index)
+    # remove 2017 records
+    y = pd.to_datetime(pd.Series(row['released']))
+    if(int(y.dt.year) == 2017):
+        tmp_index.append(index)
 
 extracted_df.drop(tmp_index , inplace=True)
 
